@@ -1,0 +1,126 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+struct college{
+	int college_id;
+	char college_name[20];
+	char course[10];
+	int year;
+	int sem;
+	int fee;
+	struct college *next;
+	struct college *prev;
+};
+
+struct college *head , *newnode , *tail;
+
+ void create(){
+	head = NULL;
+	tail = NULL;
+	int choice = 1;
+	while(choice){
+		newnode =(struct college*) malloc(sizeof(struct college));
+        if (newnode == NULL) {
+            printf("Error: Failed to allocate memory\n");
+            exit(1);
+        }
+        printf("ENTER COLLAGE ID =>");
+        scanf("%d",&newnode->college_id);
+        fflush(stdin);
+        printf("ENTER COLLAGE NAME =>");
+        scanf("%s",newnode->college_name);
+        fflush(stdin);
+        printf("ENTER COURSE =>");
+        scanf("%s",newnode->course);
+        fflush(stdin);
+        printf("ENTER YEAR =>");
+        scanf("%d",&newnode->year);
+        fflush(stdin);
+        printf("ENTER SEMESTER =>");
+        scanf("%d",&newnode->sem);
+        fflush(stdin);
+        printf("ENTER FEE =>");
+        scanf("%d",&newnode->fee);
+        fflush(stdin);
+        newnode ->prev = NULL;
+        newnode ->next = NULL;
+        if(head == NULL){
+        	head = tail = newnode;
+		}
+		else{
+			tail -> next = newnode;
+			newnode -> prev = tail;
+			tail = newnode;
+		}
+        
+        printf("DO YOU WANT TO CONTINUE PRESS <1> AND IF NOT PRESS <0>\n");
+        scanf("%d",&choice);
+        
+	}
+}
+void info(struct college *current){
+	printf("YOUR COLLEGE ID IS => %d\n", current->college_id);
+	printf("YOUR COLLEGE NAME IS => %s\n", current->college_name);
+	printf("YOUR COLLEGE COURSE IS => %s\n", current->course);
+	printf("YOUR COLLEGE YEAR IS => %d\n", current->year);
+	printf("YOUR COLLEGE SEMESTER IS => %d\n", current->sem);
+	printf("YOUR COLLEGE FEE IS => %d\n", current->fee);
+	printf("\n");
+}
+
+void search(){
+	char n,call;
+	printf("IF YOU WANT TO SEARCH THE COLLEGE INFORMATION IF YES PRESS <y> AND IF NO PRESS <n>\n");
+	scanf(" %c",&n);
+	if(n == 'y' || n == 'Y'){
+		printf("DO YOU WNAT TO SEARCH WITH COLLEGE ID PRESS <1> OR COLLEGE NAME PRESS <2>\n");
+		scanf("%d",&call);
+		if(head == NULL){
+			printf("there is no info of any college\n");
+		}
+		if(call == 1){
+			int collegeid;
+			printf("ENTER COLLEGE ID =>");
+			scanf("%d",&collegeid);
+			
+			struct college *current = head;
+			while(current != NULL){
+			if(current->college_id == collegeid){
+			info(current);
+			break;
+			}
+			current = current->next;
+			}	
+		}
+		else if(call == 2){
+			char collegename[20];
+			printf("ENTER COLLEGE NAME =>");
+			scanf("%s",collegename);
+			
+			struct college *current = head;
+			while(current != NULL)
+			{
+				if(strcmp(collegename,current->college_name) == 0){			
+			info(current); 
+			break;
+				}
+				current = current -> next;
+			}
+			
+		}
+		else{
+			printf("INVALID OPTION SELECTED\n");
+		}
+	}
+	else{
+		printf("\nINVALID OPTION SELECTED\n");
+		exit(1);
+	}
+	
+}
+ int main()
+{
+	create();
+	search();
+	return 0;
+}
